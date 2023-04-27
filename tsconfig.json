@@ -12,6 +12,6 @@
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false
   },
-  "include": ["src"],
+  "include": ["src", "app.ts"],
   "exclude": ["node_modules"]
 }
