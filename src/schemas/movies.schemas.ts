@@ -11,6 +11,8 @@ const MovieSchema = z.object({
 
 const MovieSchemaRequest = MovieSchema.omit({id: true})
 
+const MovieUpdateSchemaRequest = MovieSchemaRequest.partial()
+
 const AllMoviesSchemas = z.array(MovieSchema)
 
 const getMovieObjectSchema = z.object({
@@ -21,11 +23,10 @@ const getMovieObjectSchema = z.object({
 })
 
 
-
-
 export {
     MovieSchema,
     MovieSchemaRequest,
     AllMoviesSchemas,
-    getMovieObjectSchema
+    getMovieObjectSchema,
+    MovieUpdateSchemaRequest
 }

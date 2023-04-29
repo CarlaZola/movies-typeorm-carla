@@ -10,18 +10,22 @@ const checkIfMovieNameAlreadyExistsMiddleware = async(req: Request, res: Respons
     
     const { name }: TRequestName = req.body
 
-    const movieByName: boolean = await movieRepository.exist({
-        where: {
-            name: name
+   if('name' in req.body){
+
+        const movieByName: boolean = await movieRepository.exist({
+            where: {
+                name: name
+            }
+        })
+
+        if(movieByName){
+            throw new AppError('Movie already exists.', 409)
+
+        }else{
+            return next()
         }
-    })
-
-    if(movieByName){
-        throw new AppError('Movie already exists.', 409)
-
-    }else{
-        return next()
-    }
+   }
+   return next()
 }
 
 
