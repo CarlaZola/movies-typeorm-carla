@@ -1,7 +1,7 @@
 import { TMovie, TMovieUpdateRequest } from "../../interfaces/movies.interface"
 import { movieRepository } from "../../utils/getRepository"
 
-const updateMovieService = async (movieData: TMovieUpdateRequest, idUser: string): Promise<TMovie | void> => {
+const updateMovieService = async (movieData: TMovieUpdateRequest, idUser: string): Promise<TMovie> => {
   
     const movieBefore: TMovie | null = await movieRepository.findOneBy({
         id: +(idUser)
