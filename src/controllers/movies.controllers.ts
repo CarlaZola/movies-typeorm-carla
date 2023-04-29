@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { TMovie, TMovieRequest } from "../interfaces/movies.interface";
+import { TGetMoviesResponse, TMovie, TMovieRequest } from "../interfaces/movies.interface";
 import { createNewMovieService } from "../services/movies/createNewMovie.service";
+import { readMoviesService } from "../services/movies/readFilmes.service";
 
 const createNewMovieController = async(req: Request, res: Response): Promise<Response> => {
 
@@ -11,12 +12,14 @@ const createNewMovieController = async(req: Request, res: Response): Promise<Res
     return res.status(201).json(createdMovie)
 }
 
-const readMoviesController =  async(req: Request, res: Response): Promise<Response> =>{
+const readMoviesController =  async(req:Request, res: Response): Promise<Response > =>{
 
+    const getMoviesByQuery: TGetMoviesResponse | void = await readMoviesService(req)
     
-    return res.json()
+    return res.json(getMoviesByQuery)
 }
 
 export {
-    createNewMovieController
+    createNewMovieController,
+    readMoviesController
 }

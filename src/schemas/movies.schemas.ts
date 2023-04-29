@@ -13,9 +13,19 @@ const MovieSchemaRequest = MovieSchema.omit({id: true})
 
 const AllMoviesSchemas = z.array(MovieSchema)
 
+const getMovieObjectSchema = z.object({
+    prevPage: z.string().nullish(),
+    nextPage: z.string().nullish(),
+    count: z.number(),
+    data: AllMoviesSchemas
+})
+
+
+
 
 export {
     MovieSchema,
     MovieSchemaRequest,
-    AllMoviesSchemas
+    AllMoviesSchemas,
+    getMovieObjectSchema
 }
