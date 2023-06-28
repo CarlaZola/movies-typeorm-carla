@@ -4,6 +4,7 @@ import { MovieSchemaRequest, MovieUpdateSchemaRequest } from "../schemas/movies.
 import { createNewMovieController, deleteMovieController, readMoviesController, updateMovieController } from "../controllers/movies.controllers";
 import { checkIfMovieNameAlreadyExistsMiddleware } from "../middlewares/checkIfMovieNameAlreadyExists.middleware";
 import { checkExistenceOfMovieByIdMiddleware } from "../middlewares/checkExistenceOfMovieById.middleware";
+import { pagination } from "../middlewares/paginationReadMovies";
 
 const moviesRoutes: Router = Router()
 
@@ -12,7 +13,7 @@ checkBodyIsValidMiddleware(MovieSchemaRequest),
 checkIfMovieNameAlreadyExistsMiddleware, 
 createNewMovieController)
 
-moviesRoutes.get('', readMoviesController)
+moviesRoutes.get('', pagination, readMoviesController)
 
 moviesRoutes.patch('/:id', 
 checkExistenceOfMovieByIdMiddleware,

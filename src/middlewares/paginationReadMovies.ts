@@ -1,13 +1,10 @@
-import { Request, request } from "express";
-import { TGetMoviesResponse, TMovie } from "../../interfaces/movies.interface";
-import { movieRepository } from "../../utils/getRepository";
+import { NextFunction, Request, Response } from "express";
+import { movieRepository } from "../utils/getRepository";
 
 
-const readMoviesService = async(req: Request): Promise<TGetMoviesResponse | void> => {
+const pagination = async (req: Request, res: Response, next: NextFunction) => {
 
     let {page, perPage, sort = 'id', order = 'asc'}: any = req.query
-
-    let movies: Array<TMovie>
    
     if(!Number(page) || page < 1 || page % 1 !== 0){   
         page = 1     
@@ -21,27 +18,25 @@ const readMoviesService = async(req: Request): Promise<TGetMoviesResponse | void
         order = 'asc'
     }
 
-    movies = await movieRepository.find({
-        order: {[sort]: order},
-        skip: (page - 1) * perPage,
-        take: perPage,
-    }) 
-
     const count: number = await movieRepository.count()
     const totalPage = parseInt((count / perPage).toString())
     const checkPrevPage = page > 1 ? `http://localhost:3000/movies?page=${+(page) - 1}&perPage=${perPage}` : null
     const checkNextPage = page <= totalPage ?  `http://localhost:3000/movies?page=${(+page) +1}&perPage=${perPage}` : null
 
-
-    const returnGetMovies: TGetMoviesResponse = {
-        prevPage : checkPrevPage,
-        nextPage : checkNextPage,
+    res.locals.pagination = {
+        page,
+        perPage,
         count,
-        data: movies
+        sort, 
+        order,
+        checkPrevPage,
+        checkNextPage
     }
-    return returnGetMovies
+
+    return next()
 }
 
+
 export {
-    readMoviesService
+    pagination
 }
